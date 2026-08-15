@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LYFTA · Ripartenza</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] } } } }
+  </script>
+  <style>
+    :root { color-scheme: dark; }
+    body { background: #080b12; }
+    .glow { background: radial-gradient(circle at 20% 0%, rgba(124, 255, 178, .16), transparent 34%), radial-gradient(circle at 100% 15%, rgba(102, 126, 234, .16), transparent 35%); }
+    .exercise-card { background: linear-gradient(145deg, rgba(26, 34, 47, .94), rgba(13, 18, 28, .94)); }
+    .visual { background: linear-gradient(135deg, #c9c9c9, #e1e1e1 50%, #c5c5c5); }
+    .grid-lines, .guide { display: none; }
+    .stage-floor { fill: #b3b3b3; opacity: .62; }
+    .ground-shadow { fill: #444; opacity: .22; filter: blur(4px); }
+    .bone { fill: none; stroke: #4a4a4a; stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(1px 2px 1px rgba(0,0,0,.28)); }
+    .bone-soft { fill: none; stroke: #777; stroke-width: 11; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(1px 2px 1px rgba(0,0,0,.22)); }
+    .joint { fill: #be382c; stroke: #2e2e2e; stroke-width: 2; }
+    .head { fill: #9d9d9d; stroke: #3d3d3d; stroke-width: 2.5; filter: drop-shadow(1px 2px 1px rgba(0,0,0,.28)); }
+    .bench { fill: #747474; stroke: #454545; stroke-width: 2; filter: drop-shadow(1px 2px 1px rgba(0,0,0,.22)); }
+    .muscle { fill: #cf3f31; opacity: .92; filter: drop-shadow(0 1px 1px rgba(0,0,0,.32)); }
+    .breath { fill: #cf3f31; opacity: .18; transform-origin: center; animation: breathe 3s ease-in-out infinite; }
+    .model-head { fill: url(#skin); stroke: #414141; stroke-width: 1.5; }
+    .model-torso { fill: url(#body); stroke: #3b3b3b; stroke-width: 1.5; }
+    .model-limb { fill: url(#body); stroke: #3d3d3d; stroke-width: 1.2; }
+    .model-joint { fill: #555; stroke: #333; stroke-width: 1.2; }
+    .model-muscle { fill: url(#muscle); opacity: .97; }
+    .anatomy-line { fill: none; stroke: #2e2e2e; stroke-opacity: .58; stroke-width: 1.25; }
+    .stage-caption { fill: #666; font-size: 8px; font-family: Inter, sans-serif; font-weight: 700; letter-spacing: 1.2px; }
+    .motion-stage { aspect-ratio: 5 / 3; width: 100%; border-radius: 14px; background-color: #d2d2d2; background-repeat: no-repeat; background-size: 400% 500%; background-position: 0 var(--row); box-shadow: inset 0 0 0 1px rgba(15, 23, 42, .18), 0 12px 28px rgba(0, 0, 0, .16); }
+    .squat-body { transform-origin: 100px 117px; animation: squat 2.8s ease-in-out infinite; }
+    .lunge-body { transform-origin: 105px 118px; animation: lunge 3s ease-in-out infinite; }
+    .pushup-body { transform-origin: 105px 130px; animation: pushup 2.6s ease-in-out infinite; }
+    .incline-body { transform-origin: 100px 140px; animation: incline 2.6s ease-in-out infinite; }
+    .step-body { transform-origin: 100px 132px; animation: stepup 3s ease-in-out infinite; }
+    .plank-body { transform-origin: 105px 132px; animation: plank 3s ease-in-out infinite; }
+    .ytw-arms { transform-origin: 100px 130px; animation: ytw 3.6s ease-in-out infinite; }
+    .dip-body { transform-origin: 102px 116px; animation: dip 2.7s ease-in-out infinite; }
+    @keyframes squat { 0%,100% { transform: translateY(0) scaleY(1); } 48%,55% { transform: translateY(21px) scaleY(.83); } }
+    @keyframes lunge { 0%,100% { transform: translate(0,0); } 48%,55% { transform: translate(-2px,21px); } }
+    @keyframes pushup { 0%,100% { transform: translateY(0) rotate(0deg); } 48%,55% { transform: translateY(24px) rotate(2deg); } }
+    @keyframes incline { 0%,100% { transform: translateY(0); } 48%,55% { transform: translateY(18px); } }
+    @keyframes stepup { 0%,18% { transform: translate(-15px,22px); } 48%,65% { transform: translate(13px,-14px); } 100% { transform: translate(-15px,22px); } }
+    @keyframes plank { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+    @keyframes ytw { 0%,23%,100% { transform: rotate(0deg); } 34% { transform: rotate(-35deg); } 52% { transform: rotate(0deg); } 69% { transform: rotate(35deg); } 84% { transform: rotate(75deg); } }
+    @keyframes dip { 0%,100% { transform: translateY(0); } 48%,55% { transform: translateY(24px); } }
+    @keyframes breathe { 0%,100% { transform: scale(.82); opacity:.15; } 50% { transform: scale(1.13); opacity:.32; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; } }
+  </style>
+</head>
+<body class="min-h-screen bg-[#080b12] font-sans text-slate-100 antialiased">
+  <main class="glow mx-auto min-h-screen max-w-3xl px-4 pb-12 pt-6 sm:px-6">
+    <header class="mb-7">
+      <div class="mb-4 flex items-center justify-between">
+        <div class="flex items-center gap-2 text-xs font-semibold tracking-[.24em] text-emerald-300"><span class="h-2 w-2 rounded-full bg-emerald-300"></span>LYFTA / START</div>
+        <span class="rounded-full border border-slate-700 bg-slate-900/80 px-3 py-1 text-xs text-slate-300">Mese 01</span>
+      </div>
+      <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">Riparti con forza.</h1>
+      <p class="mt-2 max-w-xl text-sm leading-6 text-slate-400">Circuito full-body per ritrovare ritmo, tono e capacità aerobica dopo lo stop.</p>
+    </header>
+
+    <section aria-label="Scelta attrezzatura" class="mb-5 rounded-2xl border border-slate-700/70 bg-slate-900/70 p-1.5 shadow-2xl shadow-black/20">
+      <div class="grid grid-cols-2 gap-1.5" role="tablist" aria-label="Opzione allenamento">
+        <button id="groundTab" type="button" role="tab" aria-selected="true" class="option-tab rounded-xl bg-emerald-300 px-3 py-3 text-left text-sm font-semibold text-slate-950 transition">
+          <span class="block text-[11px] font-medium opacity-65">Opzione A</span>Solo Terra
+        </button>
+        <button id="benchTab" type="button" role="tab" aria-selected="false" class="option-tab rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-400 transition hover:bg-slate-800">
+          <span class="block text-[11px] font-medium opacity-65">Opzione B</span>Con Panchina/Muretto
+        </button>
+      </div>
+    </section>
+
+    <section class="mb-7 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-950/55 px-4 py-3" aria-label="Struttura circuito">
+      <div><p class="text-xs font-medium uppercase tracking-wider text-slate-500">Struttura circuito</p><p class="mt-0.5 text-sm font-medium text-slate-100">3–4 giri · 20–25 min</p></div>
+      <div class="rounded-lg bg-slate-900 px-3 py-2 text-right text-xs text-slate-400">Recupero<br><span class="font-medium text-slate-200">60–90 sec / giro</span></div>
+    </section>
+
+    <section aria-labelledby="circuitTitle">
+      <div class="mb-3 flex items-end justify-between"><div><p class="text-xs font-medium uppercase tracking-wider text-emerald-300">Circuito</p><h2 id="circuitTitle" class="mt-1 text-xl font-semibold">Movimenti controllati</h2></div><span id="equipmentLabel" class="text-xs text-slate-500">Nessuna attrezzatura</span></div>
+      <div id="exerciseList" class="space-y-4"></div>
+    </section>
+
+    <section class="mt-8 rounded-3xl border border-slate-700/80 bg-slate-900/65 p-5" aria-labelledby="trackerTitle">
+      <div class="flex flex-wrap items-start justify-between gap-3"><div><p class="text-xs font-medium uppercase tracking-wider text-emerald-300">Costanza</p><h2 id="trackerTitle" class="mt-1 text-xl font-semibold">Giorni di allenamento</h2><p id="monthSummary" class="mt-1 text-sm text-slate-400"></p></div><button id="todayToggle" type="button" class="rounded-xl border border-emerald-300/50 bg-emerald-300/10 px-3 py-2 text-sm font-semibold text-emerald-200 transition hover:bg-emerald-300/20">Segna oggi</button></div>
+      <label class="mt-4 block text-xs font-medium text-slate-400">Seduta da registrare<input id="sessionDate" type="date" class="mt-1 block w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm font-semibold text-white outline-none focus:border-emerald-300"></label>
+      <div class="mt-5 flex items-center justify-between"><button id="prevMonth" type="button" class="rounded-lg px-2 py-1 text-sm text-slate-300 transition hover:bg-slate-800" aria-label="Mese precedente">←</button><h3 id="monthLabel" class="text-sm font-semibold capitalize"></h3><button id="nextMonth" type="button" class="rounded-lg px-2 py-1 text-sm text-slate-300 transition hover:bg-slate-800" aria-label="Mese successivo">→</button></div>
+      <div class="mt-3 grid grid-cols-7 gap-1 text-center text-[10px] font-medium uppercase tracking-wide text-slate-500"><span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span></div>
+      <div id="calendarDays" class="mt-2 grid grid-cols-7 gap-1" aria-label="Calendario allenamenti"></div>
+      <p class="mt-3 text-xs text-slate-500">Tocca una data per selezionare la seduta e aggiungere o rimuovere l’allenamento.</p>
+    </section>
+
+    <section class="mt-8 rounded-3xl border border-emerald-300/25 bg-gradient-to-br from-emerald-300/15 via-slate-900 to-slate-950 p-5 shadow-2xl shadow-black/25" aria-labelledby="runTitle">
+      <p class="text-xs font-medium uppercase tracking-wider text-emerald-300">Cardio finale</p>
+      <div class="mt-1 flex flex-wrap items-end justify-between gap-3"><div><h2 id="runTitle" class="text-2xl font-semibold">Blocco Corsa Continua</h2><p class="mt-1 text-sm text-slate-400">Ritmo conversazionale, senza scatti.</p></div><label class="text-xs text-slate-400">Settimana<select id="weekSelect" class="ml-2 rounded-lg border border-slate-700 bg-slate-900 px-2 py-2 text-sm font-medium text-slate-100 outline-none focus:border-emerald-300"><option value="1">1 · 20 min</option><option value="2">2 · 20 min</option><option value="3">3 · 25 min</option><option value="4">4 · 30 min</option></select></label></div>
+      <div class="my-5 flex items-center justify-center"><div class="flex h-48 w-48 flex-col items-center justify-center rounded-full border-[10px] border-emerald-300/20 bg-slate-950/80 ring-1 ring-emerald-300/40"><span class="text-xs uppercase tracking-[.2em] text-slate-500">Rimanente</span><output id="timerDisplay" class="mt-1 text-4xl font-semibold tabular-nums tracking-tight">20:00</output></div></div>
+      <div class="grid grid-cols-3 gap-2"><button id="playPause" type="button" class="rounded-xl bg-emerald-300 px-3 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-200">Avvia</button><button id="resetTimer" type="button" class="rounded-xl border border-slate-700 bg-slate-900 px-3 py-3 text-sm font-medium text-slate-200 transition hover:bg-slate-800">Reset</button><button id="finishTimer" type="button" class="rounded-xl border border-slate-700 bg-slate-900 px-3 py-3 text-sm font-medium text-slate-200 transition hover:bg-slate-800">Fine</button></div>
+    </section>
+
+    <p class="mx-auto mt-7 max-w-xl text-center text-xs leading-5 text-slate-500">Resta a 2–3 ripetizioni dal cedimento. Interrompi se senti dolore acuto o insolito; in caso di dubbi clinici, chiedi il parere di un professionista sanitario.</p>
+  </main>
+
+  <script>
+    const plans = {
+      ground: [
+        { type:'squat', group:'Gambe · Spinta', name:'Squat a corpo libero', dose:'12 ripetizioni', cues:['Talloni incollati a terra','Ginocchia seguono la punta dei piedi','Bacino sotto la linea delle ginocchia'] },
+        { type:'pushup', group:'Petto · Braccia', name:'Piegamenti a terra', dose:'8–10 ripetizioni', cues:['Corpo in linea dalla testa ai talloni','Gomiti a circa 45°','Ginocchia a terra consentite'] },
+        { type:'lunge', group:'Gambe · Catena posteriore', name:'Affondi alternati all’indietro', dose:'10 per gamba', cues:['Fai un passo lungo indietro','Peso sul tallone davanti','Ginocchio anteriore stabile e protetto'] },
+        { type:'plank', group:'Core · Addome', name:'Plank sui gomiti', dose:'25–30 secondi', cues:['Contrai glutei e addome','Spalle sopra i gomiti','Non cedere con il bacino'] },
+        { type:'ytw', group:'Dorso · Postura', name:'Y–T–W a pancia in giù', dose:'12 ripetizioni', cues:['Petto leggermente sollevato','Collo lungo e rilassato','Stringi forte le scapole'] }
+      ],
+      bench: [
+        { type:'bulgarian', group:'Gambe · Spinta', name:'Bulgarian Split Squat', dose:'8 per gamba', cues:['Piede posteriore sulla panchina','Scendi in verticale','Spingi dal tallone davanti'] },
+        { type:'inclinepush', group:'Petto · Braccia', name:'Piegamenti inclinati', dose:'10–12 ripetizioni', cues:['Mani ben salde sulla seduta','Corpo dritto in discesa','Il petto sfiora la panchina'] },
+        { type:'stepup', group:'Gambe · Catena posteriore', name:'Step-Up sulla panchina', dose:'10 per gamba', cues:['Piede completo sopra il rialzo','Spingi solo con la gamba sopra','Controlla lentamente la discesa'] },
+        { type:'inclineplank', group:'Core · Addome', name:'Plank con mani sulla panchina', dose:'40 secondi', cues:['Spalle in linea con i polsi','Addome e glutei attivi','Corpo solido, senza incurvare'] },
+        { type:'dips', group:'Dorso · Braccia', name:'Dip per i tricipiti su panchina', dose:'10 ripetizioni', cues:['Schiena vicina alla panchina','Gomiti puntano indietro','Scendi solo finché le spalle restano comode'] }
+      ]
+    };
+
+    const seg = (x, y, length, width, angle, hot = false) => `<g transform="translate(${x} ${y}) rotate(${angle})"><rect class="model-limb" x="${-width/2}" y="-2" width="${width}" height="${length}" rx="${width/2}"/>${hot ? `<rect class="model-muscle" x="${-width/2+2}" y="${length*.18}" width="${width-4}" height="${length*.58}" rx="${Math.max(3, width/3)}"/>` : ''}<circle class="model-joint" cx="0" cy="0" r="${Math.max(3, width*.27)}"/></g>`;
+    const head = (x,y,r=11) => `<circle class="model-head" cx="${x}" cy="${y}" r="${r}"/><path class="anatomy-line" d="M${x-r*.48} ${y+2}Q${x} ${y+6} ${x+r*.5} ${y+2}"/>`;
+    const torso = (x,y,angle=0,hot='core') => `<g transform="translate(${x} ${y}) rotate(${angle})"><path class="model-torso" d="M-18 0Q0-7 18 0L22 42Q0 51-22 42Z"/><path class="anatomy-line" d="M0 1V43M-16 12Q0 17 16 12"/>${hot==='chest' ? `<path class="model-muscle" d="M-16 8Q-5 3 0 16Q5 3 16 8L14 21Q0 26-14 21Z"/>` : hot==='back' ? `<path class="model-muscle" d="M-15 12Q0 4 15 12L12 34Q0 40-12 34Z"/>` : `<path class="model-muscle" d="M-12 23Q0 18 12 23L10 39Q0 44-10 39Z"/>`}</g>`;
+    const frame = (inside, label, focus) => `<svg viewBox="0 0 220 180" class="h-auto w-full" role="img" aria-label="Animazione: ${label}" xmlns="http://www.w3.org/2000/svg"><title>${label}</title><defs><linearGradient id="body" x1="0" x2="1"><stop stop-color="#343434"/><stop offset=".5" stop-color="#8a8a8a"/><stop offset="1" stop-color="#3c3c3c"/></linearGradient><linearGradient id="skin" x1="0" x2="1"><stop stop-color="#686868"/><stop offset=".5" stop-color="#b7b7b7"/><stop offset="1" stop-color="#555"/></linearGradient><linearGradient id="muscle" x1="0" x2="1"><stop stop-color="#8f1e18"/><stop offset=".5" stop-color="#ec5948"/><stop offset="1" stop-color="#9d261d"/></linearGradient></defs><rect width="220" height="180" fill="#d4d4d4"/><path class="stage-floor" d="M0 151H220V180H0Z"/><ellipse class="ground-shadow" cx="111" cy="151" rx="78" ry="9"/><text class="stage-caption" x="12" y="19">ANATOMY MOTION · ${focus}</text>${inside}</svg>`;
+    const visuals = {
+      squat: () => frame(`<g class="squat-body">${head(104,37)}${torso(104,51,0,'core')}${seg(88,57,28,10,-52)}${seg(120,57,28,10,52)}${seg(92,92,38,18,-31,true)}${seg(116,92,38,18,31,true)}${seg(72,125,31,15,25)}${seg(136,125,31,15,-25)}</g>`, 'Squat: bacino controllato in basso, talloni stabili', 'QUADS + CORE'),
+      bulgarian: () => frame(`<path class="bench" d="M143 107H197V118H143ZM151 118L145 152M187 118L194 152"/><g class="lunge-body">${head(99,35)}${torso(99,49,0,'core')}${seg(84,56,27,10,-47)}${seg(114,56,27,10,45)}${seg(88,91,40,18,-27,true)}${seg(111,91,29,17,56,true)}${seg(70,127,29,15,20)}${seg(135,116,31,14,83)}</g>`, 'Bulgarian split squat: discesa verticale con piede posteriore in appoggio', 'QUADS + GLUTES'),
+      pushup: () => frame(`<g class="pushup-body">${head(48,101,10)}${torso(68,99,8,'chest')}${seg(88,108,35,14,37,true)}${seg(108,128,25,12,-22,true)}${seg(93,112,48,17,76,true)}${seg(139,124,42,15,66,true)}${seg(93,108,37,10,50)}${seg(112,112,33,10,42)}</g>`, 'Piegamento: tronco allineato, gomiti a quarantacinque gradi', 'CHEST + TRICEPS'),
+      inclinepush: () => frame(`<path class="bench" d="M28 111H106V123H28ZM38 123L31 152M96 123L103 152"/><g class="incline-body">${head(52,68,10)}${torso(72,78,34,'chest')}${seg(91,96,35,14,45,true)}${seg(111,120,23,12,-25,true)}${seg(91,105,55,16,73,true)}${seg(143,122,37,14,61,true)}${seg(83,99,31,10,47)}${seg(101,111,25,10,42)}</g>`, 'Piegamento inclinato: petto verso la panchina, corpo in linea', 'CHEST + TRICEPS'),
+      lunge: () => frame(`<g class="lunge-body">${head(104,35)}${torso(104,49,0,'core')}${seg(89,57,26,10,-50)}${seg(119,57,26,10,50)}${seg(93,91,39,18,-34,true)}${seg(115,91,39,18,37,true)}${seg(71,124,32,15,22)}${seg(138,125,32,15,-22)}</g>`, 'Affondo indietro: passo lungo e ginocchio anteriore stabile', 'QUADS + GLUTES'),
+      stepup: () => frame(`<path class="bench" d="M106 94H196V108H106ZM121 108L115 152M180 108L187 152"/><g class="step-body">${head(79,35)}${torso(79,49,0,'core')}${seg(64,57,28,10,-49)}${seg(94,57,28,10,50)}${seg(72,91,39,18,-28,true)}${seg(91,91,32,18,42,true)}${seg(54,124,29,15,20)}${seg(113,112,31,15,83)}</g>`, 'Step-up: spinta sulla gamba sopra il rialzo e discesa controllata', 'QUADS + GLUTES'),
+      plank: () => frame(`<g class="plank-body">${head(45,106,10)}${torso(67,98,7,'core')}${seg(89,106,37,15,76,true)}${seg(125,115,49,16,64,true)}${seg(167,136,21,13,51)}${seg(92,111,33,10,38)}${seg(109,119,27,10,35)}<ellipse class="breath" cx="72" cy="103" rx="17" ry="10"/></g>`, 'Plank: linea retta da testa a talloni con respirazione controllata', 'CORE'),
+      inclineplank: () => frame(`<path class="bench" d="M27 111H106V123H27ZM38 123L31 152M95 123L102 152"/><g class="plank-body">${head(49,72,10)}${torso(69,79,33,'core')}${seg(89,100,33,14,46,true)}${seg(111,123,49,16,65,true)}${seg(153,143,25,13,54)}${seg(87,96,30,10,45)}${seg(104,109,25,10,43)}<ellipse class="breath" cx="73" cy="84" rx="16" ry="10"/></g>`, 'Plank inclinato: spalle sui polsi e tronco stabile', 'CORE'),
+      ytw: () => frame(`<g>${head(48,127,10)}${torso(70,111,90,'back')}<g class="ytw-arms">${seg(91,130,41,13,-55,true)}${seg(91,130,41,13,55,true)}</g>${seg(111,129,49,17,88,true)}${seg(159,131,25,13,48)}${seg(112,136,23,12,-24)}</g>`, 'Y T W a terra: scapole raccolte e petto appena sollevato', 'UPPER BACK'),
+      dips: () => frame(`<path class="bench" d="M27 82H104V94H27ZM39 94L32 152M94 94L101 152"/><g class="dip-body">${head(121,44)}${torso(121,58,0,'chest')}${seg(106,69,30,13,-64,true)}${seg(94,95,27,12,-12,true)}${seg(132,99,41,17,55,true)}${seg(157,128,31,15,55,true)}${seg(139,72,27,10,48)}${seg(153,90,23,10,39)}</g>`, 'Dip su panchina: schiena vicina e gomiti rivolti indietro', 'TRICEPS')
+    };
+    const motionFrame = (atlas, row, label) => `<div class="motion-stage" role="img" aria-label="Animazione 3D originale: ${label}" style="--row:${row};background-image:url('${atlas}')"><span class="sr-only">${label}</span></div>`;
+    Object.assign(visuals, {
+      squat: () => motionFrame('assets/floor-motion-atlas-4f.png', '0%', 'Squat a corpo libero, ciclo completo in quattro fasi'),
+      pushup: () => motionFrame('assets/floor-motion-atlas-4f.png', '25%', 'Piegamento a terra, ciclo completo in quattro fasi'),
+      lunge: () => motionFrame('assets/floor-motion-atlas-4f.png', '50%', 'Affondo indietro, ciclo completo in quattro fasi'),
+      plank: () => motionFrame('assets/floor-motion-atlas-4f.png', '75%', 'Plank sui gomiti, respirazione in quattro fasi'),
+      ytw: () => motionFrame('assets/floor-motion-atlas-4f.png', '100%', 'Y T W a terra, ciclo completo in quattro fasi'),
+      bulgarian: () => motionFrame('assets/bench-motion-atlas-4f.png', '0%', 'Bulgarian split squat, ciclo completo in quattro fasi'),
+      inclinepush: () => motionFrame('assets/bench-motion-atlas-4f.png', '25%', 'Piegamento inclinato, ciclo completo in quattro fasi'),
+      stepup: () => motionFrame('assets/bench-motion-atlas-4f.png', '50%', 'Step-up, ciclo completo in quattro fasi'),
+      inclineplank: () => motionFrame('assets/bench-motion-atlas-4f.png', '75%', 'Plank inclinato, respirazione in quattro fasi'),
+      dips: () => motionFrame('assets/bench-motion-atlas-4f.png', '100%', 'Dip per tricipiti, ciclo completo in quattro fasi')
+    });
+
+    const exerciseList = document.getElementById('exerciseList');
+    const tabs = { ground: document.getElementById('groundTab'), bench: document.getElementById('benchTab') };
+    let activePlan = 'ground';
+    const storage = {
+      read(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } },
+      write(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+    };
+    const dateKey = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    let activeSessionDate = dateKey(new Date());
+    const sessionLogs = storage.read('lyfta-restart-session-exercise-log', {});
+    const legacyExerciseLogs = storage.read('lyfta-restart-exercise-log', {});
+    if (!Object.keys(sessionLogs).length && Object.keys(legacyExerciseLogs).length) {
+      sessionLogs[activeSessionDate] = legacyExerciseLogs;
+      storage.write('lyfta-restart-session-exercise-log', sessionLogs);
+    }
+    const targetValue = dose => Number((dose.match(/\d+/) || ['0'])[0]);
+    const inputValue = (key, field, fallback) => Math.max(0, Number(sessionLogs[activeSessionDate]?.[key]?.[field] ?? fallback));
+
+    function renderPlan() {
+      const isBench = activePlan === 'bench';
+      document.getElementById('equipmentLabel').textContent = isBench ? 'Panchina o muretto stabile' : 'Nessuna attrezzatura';
+      for (const [key, tab] of Object.entries(tabs)) {
+        const selected = key === activePlan;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.className = `option-tab rounded-xl px-3 py-3 text-left text-sm font-semibold transition ${selected ? 'bg-emerald-300 text-slate-950' : 'text-slate-400 hover:bg-slate-800'}`;
+      }
+      exerciseList.innerHTML = plans[activePlan].map((item, i) => {
+        const key = `${activePlan}-${i}`;
+        const isTimed = item.dose.includes('secondi');
+        const target = targetValue(item.dose);
+        const amountLabel = isTimed ? 'Secondi per serie' : 'Ripetizioni per serie';
+        const amountField = isTimed ? 'seconds' : 'reps';
+        return `<article class="exercise-card overflow-hidden rounded-3xl border border-slate-700/70 shadow-xl shadow-black/10"><div class="visual border-b border-slate-700/60 px-5 py-3">${visuals[item.type]()}</div><div class="p-5"><div class="flex items-start justify-between gap-4"><div><p class="text-[11px] font-medium uppercase tracking-wider text-emerald-300">0${i+1} · ${item.group}</p><h3 class="mt-1 text-lg font-semibold leading-tight text-white">${item.name}</h3></div><span class="shrink-0 rounded-lg bg-slate-800 px-2.5 py-1.5 text-xs font-medium text-emerald-200">${item.dose}</span></div><ul class="mt-4 grid gap-2 text-sm leading-5 text-slate-300">${item.cues.map(cue => `<li class="flex gap-2"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300"></span>${cue}</li>`).join('')}</ul><div class="mt-5 border-t border-slate-700/70 pt-4"><p class="text-[11px] font-medium uppercase tracking-wider text-slate-500">Registro esecuzione</p><div class="mt-3 grid grid-cols-2 gap-3"><label class="text-xs font-medium text-slate-400">Serie fatte<input class="mt-1 block w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-base font-semibold text-white outline-none focus:border-emerald-300" type="number" inputmode="numeric" min="0" max="20" value="${inputValue(key, 'sets', 0)}" data-exercise-key="${key}" data-exercise-field="sets" aria-label="Serie fatte per ${item.name}"></label><label class="text-xs font-medium text-slate-400">${amountLabel}<input class="mt-1 block w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-base font-semibold text-white outline-none focus:border-emerald-300" type="number" inputmode="numeric" min="0" max="999" value="${inputValue(key, amountField, target)}" data-exercise-key="${key}" data-exercise-field="${amountField}" aria-label="${amountLabel} per ${item.name}"></label></div></div></div></article>`;
+      }).join('');
+    }
+    tabs.ground.addEventListener('click', () => { activePlan = 'ground'; renderPlan(); });
+    tabs.bench.addEventListener('click', () => { activePlan = 'bench'; renderPlan(); });
+    exerciseList.addEventListener('input', event => {
+      const input = event.target.closest('[data-exercise-key]');
+      if (!input) return;
+      const key = input.dataset.exerciseKey;
+      sessionLogs[activeSessionDate] = sessionLogs[activeSessionDate] || {};
+      sessionLogs[activeSessionDate][key] = { ...(sessionLogs[activeSessionDate][key] || {}), [input.dataset.exerciseField]: Math.max(0, Number(input.value || 0)) };
+      storage.write('lyfta-restart-session-exercise-log', sessionLogs);
+    });
+    renderPlan();
+    const motionSequence = [0, 1, 2, 3, 2, 1];
+    let motionIndex = 0;
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      window.setInterval(() => {
+        motionIndex = (motionIndex + 1) % motionSequence.length;
+        const x = `${(motionSequence[motionIndex] / 3) * 100}%`;
+        document.querySelectorAll('.motion-stage').forEach(stage => {
+          stage.style.backgroundPosition = `${x} ${stage.style.getPropertyValue('--row')}`;
+        });
+      }, 440);
+    }
+
+    const trainingDays = storage.read('lyfta-restart-training-days', {});
+    const calendarDays = document.getElementById('calendarDays');
+    const monthLabel = document.getElementById('monthLabel');
+    const monthSummary = document.getElementById('monthSummary');
+    const todayToggle = document.getElementById('todayToggle');
+    const sessionDateInput = document.getElementById('sessionDate');
+    sessionDateInput.value = activeSessionDate;
+    let calendarDate = new Date();
+    calendarDate = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), 1);
+    function renderCalendar() {
+      const year = calendarDate.getFullYear();
+      const month = calendarDate.getMonth();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const leading = (new Date(year, month, 1).getDay() + 6) % 7;
+      const today = dateKey(new Date());
+      const marked = Array.from({ length: daysInMonth }, (_, i) => dateKey(new Date(year, month, i + 1))).filter(day => trainingDays[day]).length;
+      monthLabel.textContent = new Intl.DateTimeFormat('it-IT', { month: 'long', year: 'numeric' }).format(calendarDate);
+      monthSummary.textContent = `${marked} ${marked === 1 ? 'giorno segnato' : 'giorni segnati'} questo mese`;
+      todayToggle.textContent = trainingDays[today] ? 'Oggi segnato ✓' : 'Segna oggi';
+      calendarDays.innerHTML = `${'<span aria-hidden="true"></span>'.repeat(leading)}${Array.from({ length: daysInMonth }, (_, i) => {
+        const day = i + 1, key = dateKey(new Date(year, month, day)), isMarked = Boolean(trainingDays[key]), isToday = key === today, isSelected = key === activeSessionDate;
+        const state = isMarked ? 'bg-emerald-300 text-slate-950' : isToday ? 'border border-emerald-300/60 text-emerald-200' : 'text-slate-300 hover:bg-slate-800';
+        return `<button type="button" data-training-date="${key}" aria-pressed="${isMarked}" class="h-9 rounded-lg text-sm font-medium transition ${state} ${isSelected ? 'ring-2 ring-white/70' : ''}">${day}</button>`;
+      }).join('')}`;
+    }
+    function selectSessionDate(key) {
+      activeSessionDate = key;
+      sessionDateInput.value = key;
+      const [year, month] = key.split('-').map(Number);
+      calendarDate = new Date(year, month - 1, 1);
+      renderPlan();
+      renderCalendar();
+    }
+    function toggleTrainingDay(key) {
+      if (trainingDays[key]) delete trainingDays[key]; else trainingDays[key] = true;
+      storage.write('lyfta-restart-training-days', trainingDays);
+      renderCalendar();
+    }
+    document.getElementById('prevMonth').addEventListener('click', () => { calendarDate = new Date(calendarDate.getFullYear(), calendarDate.getMonth() - 1, 1); renderCalendar(); });
+    document.getElementById('nextMonth').addEventListener('click', () => { calendarDate = new Date(calendarDate.getFullYear(), calendarDate.getMonth() + 1, 1); renderCalendar(); });
+    calendarDays.addEventListener('click', event => { const day = event.target.closest('[data-training-date]'); if (day) { selectSessionDate(day.dataset.trainingDate); toggleTrainingDay(day.dataset.trainingDate); } });
+    sessionDateInput.addEventListener('change', () => { if (sessionDateInput.value) selectSessionDate(sessionDateInput.value); });
+    todayToggle.addEventListener('click', () => { const today = dateKey(new Date()); selectSessionDate(today); toggleTrainingDay(today); });
+    renderCalendar();
+
+    const durations = { 1: 1200, 2: 1200, 3: 1500, 4: 1800 };
+    const weekSelect = document.getElementById('weekSelect');
+    const display = document.getElementById('timerDisplay');
+    const playPause = document.getElementById('playPause');
+    let seconds = durations[weekSelect.value], timer = null;
+    const format = n => `${String(Math.floor(n / 60)).padStart(2, '0')}:${String(n % 60).padStart(2, '0')}`;
+    function paintTimer() { display.textContent = format(seconds); }
+    function stopTimer() { clearInterval(timer); timer = null; playPause.textContent = seconds === 0 ? 'Avvia' : 'Avvia'; }
+    function toggleTimer() { if (timer) { clearInterval(timer); timer = null; playPause.textContent = 'Riprendi'; return; } if (seconds === 0) seconds = durations[weekSelect.value]; playPause.textContent = 'Pausa'; timer = setInterval(() => { seconds--; paintTimer(); if (seconds <= 0) { seconds = 0; paintTimer(); stopTimer(); display.parentElement.classList.add('ring-2', 'ring-emerald-300'); } }, 1000); }
+    weekSelect.addEventListener('change', () => { stopTimer(); seconds = durations[weekSelect.value]; display.parentElement.classList.remove('ring-2', 'ring-emerald-300'); paintTimer(); });
+    playPause.addEventListener('click', toggleTimer);
+    document.getElementById('resetTimer').addEventListener('click', () => { stopTimer(); seconds = durations[weekSelect.value]; display.parentElement.classList.remove('ring-2', 'ring-emerald-300'); paintTimer(); });
+    document.getElementById('finishTimer').addEventListener('click', () => { stopTimer(); seconds = 0; display.parentElement.classList.add('ring-2', 'ring-emerald-300'); paintTimer(); });
+    paintTimer();
+  </script>
+</body>
+</html>
